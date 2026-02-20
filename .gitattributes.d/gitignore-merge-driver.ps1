@@ -66,11 +66,10 @@ function Load-GitIgnorePatterns {
 }
 
 # --- MAIN EXECUTION ---
-Write-Host "Using gitignore-merge-driver.ps1"
 
 $repoRoot = Get-RepoRoot -Start $Ours
 if (-not $repoRoot) {
-    Write-Host "Could not determine repo root, refusing auto-merge"
+    Write-Error "Could not determine repo root, refusing auto-merge"
     exit 1
 }
 
@@ -93,11 +92,8 @@ foreach ($regex in $patterns) {
 }
 
 if ($shouldAcceptTheirs) {
-    Write-Host "Auto-accepting incoming changes for ignored path: $relativePath"
     Copy-Item -LiteralPath $Theirs -Destination $Merged -Force
     exit 0
 }
 
-# Not ignored → let Git handle merge normally
-Write-Host "Path not ignored: $relativePath → fallback to Git merge"
 exit 1

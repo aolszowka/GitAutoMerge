@@ -7,8 +7,6 @@ Git passes:
   $args[3] = merged output file
 #>
 
-Write-Host "Using json-merge-driver.ps1"
-
 $base = $args[0]
 $ours = $args[1]
 $theirs = $args[2]
