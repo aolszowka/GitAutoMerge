@@ -4,4 +4,4 @@
 
 [merge "gitignore-accept-theirs"]
     name = Auto-accept incoming changes for ignored paths
-    driver = pwsh .gitattributes.d/gitignore-merge-driver.ps1 %O %A %B %A
+    driver = pwsh .gitattributes.d/gitignore-merge-driver.ps1 %O %A %B %A %P
