@@ -16,7 +16,7 @@ function Get-RepoRoot {
         $dir = $dir.Directory
     }
 
-    while ($dir -ne $null) {
+    while ($null -ne $dir) {
         if (Test-Path -LiteralPath (Join-Path $dir.FullName ".git")) {
             return $dir.FullName
         }
@@ -60,6 +60,10 @@ function Load-GitIgnorePatterns {
 
         $gitignore = Join-Path $dir ".gitignore"
         if (Test-Path -LiteralPath $gitignore) {
+
+            # Compute directory relative to repo root
+            $relativeDir = $dir.Substring($RepoRoot.Length).TrimStart("\", "/")
+
             foreach ($line in Get-Content -LiteralPath $gitignore) {
                 $trim = $line.Trim()
 
@@ -67,7 +71,17 @@ function Load-GitIgnorePatterns {
                     continue
                 }
 
-                $patterns += Convert-GitIgnorePatternToRegex -Pattern $trim
+                # Rebase pattern to the directory containing the .gitignore
+                if ($trim.StartsWith("/")) {
+                    # anchored to this directory
+                    $rebased = "$relativeDir$trim"
+                }
+                else {
+                    # unanchored → applies to all subpaths under this directory
+                    $rebased = "$relativeDir/$trim"
+                }
+
+                $patterns += Convert-GitIgnorePatternToRegex -Pattern $rebased
             }
         }
 
