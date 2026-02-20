@@ -1,3 +1,7 @@
 [merge "json-accept-theirs"]
     name = Always accept incoming changes for JSON
     driver = pwsh .gitattributes.d/json-merge-driver.ps1 %O %A %B %A
+
+[merge "gitignore-accept-theirs"]
+    name = Auto-accept incoming changes for ignored paths
+    driver = pwsh .gitattributes.d/gitignore-merge-driver.ps1 %O %A %B %A
