@@ -66,6 +66,7 @@ function Load-GitIgnorePatterns {
 }
 
 # --- MAIN EXECUTION ---
+Write-Host "Using gitignore-merge-driver.ps1"
 
 $repoRoot = Get-RepoRoot -Start $Ours
 if (-not $repoRoot) {
